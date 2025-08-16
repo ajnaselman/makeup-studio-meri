@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-function App() {
   const [reviews, setReviews] = useState([]);
   const [form, setForm] = useState({
     name: '',
@@ -16,27 +15,18 @@ function App() {
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
 
-
-
-
-
-  
-  
-  const [success, setSuccess] = useState('');
-  const [cart, setCart] = useState([]);
-  const [showCart, setShowCart] = useState(false);
-
   const fakeReviews = [
     { id: 1, name: "Ana K.", text: "Fenomenalno iskustvo! Moj make-up nikad nije izgledao bolje.", rating: 5 },
     { id: 2, name: "Lejla S.", text: "Meri je stvarno čarobna, sve preporuke!", rating: 5 },
     { id: 3, name: "Sara D.", text: "Topla preporuka! Divna atmosfera i savršen rezultat.", rating: 5 },
-    { id: 4, name: "Maja T.", text: "Osjećala sam se posebno i samouvjereno, hvala!", rating: 5 }
+    { id: 4, name: "Maja T.", text: "Osjećala sam se posebno i samouvjerena, hvala!", rating: 5 }
   ];
 
   useEffect(() => {
     fetch('http://localhost:5000/api/reviews')
       .then(res => res.json())
-      .then(data => setReviews(data));
+      .then(data => setReviews(data))
+      .catch(() => setReviews(fakeReviews)); // fallback ako backend nije dostupan
   }, []);
 
   const handleChange = e => {
@@ -51,7 +41,8 @@ function App() {
       body: JSON.stringify(form)
     })
       .then(res => res.json())
-      .then(data => setSuccess('Vaša poruka je poslata!'));
+      .then(() => setSuccess('Vaša poruka je poslata!'))
+      .catch(() => setSuccess('Greška pri slanju poruke.'));
   };
 
   const addToCart = (product) => {
@@ -250,5 +241,6 @@ function App() {
 }
 
 export default App;
+
 
 
