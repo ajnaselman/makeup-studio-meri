@@ -1,0 +1,15 @@
+{
+  "name": "makeup-studio-meri",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd server && npm start",
+    "frontend": "cd my-frontend && npm start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
