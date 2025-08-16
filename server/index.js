@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use('/services', servicesRoutes);
 app.use('/appointments', appointmentsRoutes);
 
-// ✅ Dodaj ovdje test rutu za frontend
+
 app.get('/api/data', (req, res) => {
     res.json({ message: 'Pozdrav iz backenda 🚀' });
 });
