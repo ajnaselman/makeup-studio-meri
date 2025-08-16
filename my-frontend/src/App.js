@@ -22,27 +22,45 @@ function App() {
     { id: 4, name: "Maja T.", text: "Osjećala sam se posebno i samouvjerena, hvala!", rating: 5 }
   ];
 
+  const BACKEND_URL = 'https://makeup-studio-meri.onrender.com';
+
   useEffect(() => {
-    fetch('http://localhost:5000/api/reviews')
-      .then(res => res.json())
-      .then(data => setReviews(data))
-      .catch(() => setReviews(fakeReviews)); // fallback ako backend nije dostupan
+    async function fetchReviews() {
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/reviews`);
+        const data = await response.json();
+        setReviews(data);
+      } catch (error) {
+        setReviews(fakeReviews);
+      }
+    }
+    fetchReviews();
   }, []);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    fetch('http://localhost:5000/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form)
-    })
-      .then(res => res.json())
-      .then(() => setSuccess('Vaša poruka je poslata!'))
-      .catch(() => setSuccess('Greška pri slanju poruke.'));
+    try {
+      await fetch(`${BACKEND_URL}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      setSuccess('Vaša poruka je poslata!');
+      setForm({
+        name: '',
+        email: '',
+        service: '',
+        message: '',
+        date: '',
+        time: ''
+      });
+    } catch (error) {
+      setSuccess('Greška pri slanju poruke.');
+    }
   };
 
   const addToCart = (product) => {
@@ -57,7 +75,7 @@ function App() {
       <nav className="navbar">
         <img src="/logo2.jpg" alt="Logo" className="nav-logo" />
         <div className="cart" onClick={() => setShowCart(!showCart)}>
-          <img src="/cart.jpg" alt="Kosarica" className="cart-icon" />
+          <img src="/cart.jpg" alt="Košarica" className="cart-icon" />
           {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
         </div>
       </nav>
@@ -177,7 +195,7 @@ function App() {
       <section className="reviews">
         <h2>Recenzije</h2>
         <div className="reviews-grid">
-          {fakeReviews.map(r => (
+          {reviews.map(r => (
             <div className="review" key={r.id}>
               <p>{r.text}</p>
               <span>{'★'.repeat(r.rating)}</span>
@@ -191,17 +209,17 @@ function App() {
       <section id="contact" className="contact">
         <h2>Kontakt</h2>
         <form onSubmit={handleSubmit}>
-          <input type="text" name="name" placeholder="Ime i prezime" onChange={handleChange} required />
-          <input type="email" name="email" placeholder="Email" onChange={handleChange} required />
-          <select name="service" onChange={handleChange} required>
+          <input type="text" name="name" placeholder="Ime i prezime" value={form.name} onChange={handleChange} required />
+          <input type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+          <select name="service" value={form.service} onChange={handleChange} required>
             <option value="">Odaberite uslugu</option>
             <option value="Profesionalno šminkanje">Profesionalno šminkanje</option>
             <option value="Puder obrve">Puder obrve</option>
             <option value="Trajni ruž">Trajni ruž</option>
           </select>
-          <input type="date" name="date" onChange={handleChange} required />
-          <input type="time" name="time" onChange={handleChange} required />
-          <textarea name="message" placeholder="Poruka" onChange={handleChange}></textarea>
+          <input type="date" name="date" value={form.date} onChange={handleChange} required />
+          <input type="time" name="time" value={form.time} onChange={handleChange} required />
+          <textarea name="message" placeholder="Poruka" value={form.message} onChange={handleChange}></textarea>
           <button type="submit">Pošalji</button>
           {success && <p className="success">{success}</p>}
         </form>
@@ -241,6 +259,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
