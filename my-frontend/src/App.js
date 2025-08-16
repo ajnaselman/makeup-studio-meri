@@ -2,15 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [reviews, setReviews] = useState([]);
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    service: '',
-    message: '',
-    date: '',
-    time: ''
-  });
+  
   const [success, setSuccess] = useState('');
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
