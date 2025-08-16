@@ -15,16 +15,16 @@ function App() {
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
 
-  const fakeReviews = [
-    { id: 1, name: "Ana K.", text: "Fenomenalno iskustvo! Moj make-up nikad nije izgledao bolje.", rating: 5 },
-    { id: 2, name: "Lejla S.", text: "Meri je stvarno čarobna, sve preporuke!", rating: 5 },
-    { id: 3, name: "Sara D.", text: "Topla preporuka! Divna atmosfera i savršen rezultat.", rating: 5 },
-    { id: 4, name: "Maja T.", text: "Osjećala sam se posebno i samouvjerena, hvala!", rating: 5 }
-  ];
-
   const BACKEND_URL = 'https://makeup-studio-meri.onrender.com';
 
   useEffect(() => {
+    const fakeReviews = [
+      { id: 1, name: "Ana K.", text: "Fenomenalno iskustvo! Moj make-up nikad nije izgledao bolje.", rating: 5 },
+      { id: 2, name: "Lejla S.", text: "Meri je stvarno čarobna, sve preporuke!", rating: 5 },
+      { id: 3, name: "Sara D.", text: "Topla preporuka! Divna atmosfera i savršen rezultat.", rating: 5 },
+      { id: 4, name: "Maja T.", text: "Osjećala sam se posebno i samouvjerena, hvala!", rating: 5 }
+    ];
+
     async function fetchReviews() {
       try {
         const response = await fetch(`${BACKEND_URL}/api/reviews`);
